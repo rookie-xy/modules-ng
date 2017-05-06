@@ -7,7 +7,6 @@ package mlog
 import (
       "unsafe"
     . "github.com/rookie-xy/worker/types"
-    . "github.com/rookie-xy/worker/modules"
 )
 
 const (

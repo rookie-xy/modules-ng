@@ -7,7 +7,7 @@ package file
 import (
       "github.com/fsnotify/fsnotify"
 
-    . "github.com/rookie-xy/main/types"
+    . "github.com/rookie-xy/worker/types"
 
     "log"
     "fmt"

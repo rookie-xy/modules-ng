@@ -6,8 +6,7 @@ package stdin
 
 import (
       "unsafe"
-    . "github.com/rookie-xy/main/types"
-    . "github.com/rookie-xy/main/modules"
+    . "github.com/rookie-xy/worker/types"
     "fmt"
 )
 

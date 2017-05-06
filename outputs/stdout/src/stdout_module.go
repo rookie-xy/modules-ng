@@ -6,7 +6,7 @@ package stdout
 
 import (
       "unsafe"
-    . "github.com/rookie-xy/main/types"
+    . "github.com/rookie-xy/worker/types"
 )
 
 const (
