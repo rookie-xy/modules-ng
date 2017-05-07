@@ -89,6 +89,7 @@ func (r *SimpleOption) Init(o *Option) int {
     return Ok
 }
 
+/*
 func (r *SimpleOption) Main(c *Configure) int {
     return Ignore
 }
@@ -96,21 +97,16 @@ func (r *SimpleOption) Main(c *Configure) int {
 func (r *SimpleOption) Exit() int {
     return Ignore
 }
+*/
 
-func (r *SimpleOption) Type() *Module {
-    return r.Self()
-}
-
-var SimpleOptionModule = &SimpleOption{
-    Module: &Module{
-        MODULE_V1,
-        CONTEXT_V1,
-        nil,
-        nil,
-        SYSTEM_MODULE,
-    },
+var SimpleOptionModule = &Module{
+    MODULE_V1,
+    CONTEXT_V1,
+    nil,
+    nil,
+    SYSTEM_MODULE,
 }
 
 func init() {
-    Modulers = Load(Modulers, SimpleOptionModule)
+    Modulers = Load(Modulers, &SimpleOption{SimpleOptionModule})
 }

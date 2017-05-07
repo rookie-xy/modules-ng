@@ -75,14 +75,14 @@ var outputStdoutCommands = []Command{
 func (r *OutputStdout) Init(o *Option) int {
     context := r.Context.GetDatas()
 
-    for _, v := range context {
+    for i, v := range context {
         if v != nil {
             this := (*OutputStdout)(unsafe.Pointer(uintptr(*v)))
             if this == nil {
                 return Error
             }
 
-            fmt.Println(this.channel, this.status)
+            fmt.Println(i, this.channel, this.status)
         } else {
             break
         }

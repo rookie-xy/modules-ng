@@ -7,7 +7,6 @@ package memory
 import (
       "unsafe"
     . "github.com/rookie-xy/worker/types"
-    "fmt"
 )
 
 const (
@@ -18,7 +17,7 @@ const (
 type Memory struct {
     *Module
 }
-
+/*
 func (r *Memory) Init(o *Option) int {
     fmt.Println("ChannelMemory init")
     return Ok
@@ -33,10 +32,7 @@ func (r *Memory) Exit() int {
     fmt.Println("ChannelMemory exit")
     return Ok
 }
-
-func (r *Memory) Type() *Module {
-    return r.Self()
-}
+*/
 
 var	memory = String{ len("memory"), "memory" }
 var memoryCommands = []Command{

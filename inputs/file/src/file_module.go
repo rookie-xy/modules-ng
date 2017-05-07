@@ -7,7 +7,6 @@ package file
 import (
       "unsafe"
     . "github.com/rookie-xy/worker/types"
-    "fmt"
 )
 
 const (
@@ -17,25 +16,6 @@ const (
 
 type Files struct {
     *Module
-}
-
-func (r *Files) Init(o *Option) int {
-    fmt.Println("InputFile init")
-    return Ok
-}
-
-func (r *Files) Main(cfg *Configure) int {
-    fmt.Println("InputFile main")
-    return Ok
-}
-
-func (r *Files) Exit() int {
-    fmt.Println("InputFile exit")
-    return Ok
-}
-
-func (r *Files) Type() *Module {
-    return r.Self()
 }
 
 var file = String{ len("file"), "file" }
