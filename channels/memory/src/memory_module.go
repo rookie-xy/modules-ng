@@ -17,22 +17,6 @@ const (
 type Memory struct {
     *Module
 }
-/*
-func (r *Memory) Init(o *Option) int {
-    fmt.Println("ChannelMemory init")
-    return Ok
-}
-
-func (r *Memory) Main(cfg *Configure) int {
-    fmt.Println("ChannelMemory main")
-    return Ok
-}
-
-func (r *Memory) Exit() int {
-    fmt.Println("ChannelMemory exit")
-    return Ok
-}
-*/
 
 var	memory = String{ len("memory"), "memory" }
 var memoryCommands = []Command{
