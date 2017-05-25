@@ -10,16 +10,16 @@ import (
 )
 
 const (
-    FILE_MODULE = INPUT_MODULE|0x03000000
+    FILE_MODULE = INPUT_MODULE|MAIN_MODULE
     FILE_CONFIG = USER_CONFIG|CONFIG_ARRAY
 )
 
 type Files struct {
-    *Module
+    *Module_t
 }
 
-var file = String{ len("file"), "file" }
-var fileCommands = []Command{
+var file = String_t{ len("file"), "file" }
+var fileCommands = []Command_t{
 
     { file,
       FILE_CONFIG,
@@ -31,27 +31,25 @@ var fileCommands = []Command{
     NilCommand,
 }
 
-func fileBlock(c *Configure, _ *Command, _ *unsafe.Pointer) int {
+func fileBlock(c *Configure_t, _ *Command_t, _ *unsafe.Pointer) int {
     if nil == c {
         return Error
     }
 
     flag := FILE_CONFIG|CONFIG_VALUE
-    Block(c, Modulers, FILE_MODULE, flag)
+    Block(c, Modules, FILE_MODULE, flag)
 
     return Ok
 }
 
-var fileModule = &Files{
-    Module: &Module{
-        MODULE_V1,
-        CONTEXT_V1,
-        nil,
-        fileCommands,
-        INPUT_MODULE,
-    },
+var fileModule = &Module_t{
+    MODULE_V1,
+    CONTEXT_V1,
+    nil,
+    fileCommands,
+    INPUT_MODULE,
 }
 
 func init() {
-    Modulers = Load(Modulers, fileModule)
+    Modules = Load(Modules, &Files{Module_t:fileModule})
 }

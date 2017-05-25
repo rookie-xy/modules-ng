@@ -9,10 +9,10 @@ import (
 )
 
 type SimpleOption struct {
-    *Module
+    *Module_t
 }
 
-func (r *SimpleOption) Init(o *Option) int {
+func (r *SimpleOption) Init(o *Option_t) int {
     argv := o.GetArgv()
 
     for i := 1; i < o.GetArgc(); i++ {
@@ -64,7 +64,7 @@ func (r *SimpleOption) Init(o *Option) int {
         }
     }
 
-    configure := NewConfigure(o.Log)
+    configure := NewConfigure(o.Log_t)
 
     if item := o.GetItem("format"); item != nil {
         name := item.(string)
@@ -76,30 +76,20 @@ func (r *SimpleOption) Init(o *Option) int {
 
             codec.Init(nil)
 
-            code := NewCode(codec)
+            this := NewCodec(codec)
             //code.SetName(item.(string))
-            configure.Code = &code
+            configure.Codec_t = &this
         }
     } else {
         return Error
     }
 
-    o.Configure = configure
+    o.Configure_t = configure
 
     return Ok
 }
 
-/*
-func (r *SimpleOption) Main(c *Configure) int {
-    return Ignore
-}
-
-func (r *SimpleOption) Exit() int {
-    return Ignore
-}
-*/
-
-var SimpleOptionModule = &Module{
+var SimpleOptionModule = &Module_t{
     MODULE_V1,
     CONTEXT_V1,
     nil,
@@ -108,5 +98,5 @@ var SimpleOptionModule = &Module{
 }
 
 func init() {
-    Modulers = Load(Modulers, &SimpleOption{SimpleOptionModule})
+    Modules = Load(Modules, &SimpleOption{SimpleOptionModule})
 }

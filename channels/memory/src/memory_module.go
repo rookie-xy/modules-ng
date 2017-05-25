@@ -15,11 +15,11 @@ const (
 )
 
 type Memory struct {
-    *Module
+    *Module_t
 }
 
-var	memory = String{ len("memory"), "memory" }
-var memoryCommands = []Command{
+var	memory = String_t{ len("memory"), "memory" }
+var memoryCommands = []Command_t{
 
     { memory,
       MEMORY_CONFIG,
@@ -31,27 +31,25 @@ var memoryCommands = []Command{
     NilCommand,
 }
 
-func memoryBlock(c *Configure, _ *Command, _ *unsafe.Pointer) int {
+func memoryBlock(c *Configure, _ *Command_t, _ *unsafe.Pointer) int {
     if nil == c {
         return Error
     }
 
     flag := MEMORY_CONFIG|CONFIG_VALUE
-    Block(c, Modulers, MEMORY_MODULE, flag)
+    Block(c, Modules, MEMORY_MODULE, flag)
 
     return Ok
 }
 
-var memoryModule = &Memory{
-    Module: &Module{
-        MODULE_V1,
-        CONTEXT_V1,
-        nil,
-        memoryCommands,
-        CHANNEL_MODULE,
-    },
+var memoryModule = &Module{
+    MODULE_V1,
+    CONTEXT_V1,
+    nil,
+    memoryCommands,
+    CHANNEL_MODULE,
 }
 
 func init() {
-    Modulers = Load(Modulers, memoryModule)
+    Modules = Load(Modules, &Memory{Module_t:memoryModule})
 }

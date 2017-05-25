@@ -10,16 +10,16 @@ import (
 )
 
 const (
-    STDOUT_MODULE = OUTPUT_MODULE|0x01000000
+    STDOUT_MODULE = OUTPUT_MODULE|MAIN_MODULE
     STDOUT_CONFIG = USER_CONFIG|CONFIG_ARRAY
 )
 
 type Stdout struct{
-    *Module
+    *Module_t
 }
 
-var stdout = String{ len("stdout"), "stdout" }
-var stdoutCommands = []Command{
+var stdout = String_t{ len("stdout"), "stdout" }
+var stdoutCommands = []Command_t{
 
     { stdout,
       STDOUT_CONFIG,
@@ -31,18 +31,18 @@ var stdoutCommands = []Command{
     NilCommand,
 }
 
-func stdoutBlock(c *Configure, _ *Command, _ *unsafe.Pointer) int {
+func stdoutBlock(c *Configure_t, _ *Command_t, _ *unsafe.Pointer) int {
     if nil == c {
         return Error
     }
 
     flag := STDOUT_CONFIG|CONFIG_VALUE
-    Block(c, Modulers, STDOUT_MODULE, flag)
+    Block(c, Modules, STDOUT_MODULE, flag)
 
     return Ok
 }
 
-var stdoutModule = &Module{
+var stdoutModule = &Module_t{
     MODULE_V1,
     CONTEXT_V1,
     nil,
@@ -51,5 +51,5 @@ var stdoutModule = &Module{
 }
 
 func init() {
-    Modulers = Load(Modulers, &Stdout{stdoutModule})
+    Modules = Load(Modules, &Stdout{stdoutModule})
 }

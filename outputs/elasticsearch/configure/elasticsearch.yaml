@@ -1,0 +1,10 @@
+outputs:
+    - elasticsearch:
+          subscribe:
+              - "pdms"
+              - "default"
+
+          cluster:
+              - "10.0.0.42:9092"
+              - "10.0.0.43:9092"
+              - "10.0.0.44:9092"

@@ -11,7 +11,7 @@ import (
 )
 
 type ChannelMemory struct {
-    *Module
+    *Module_t
 
      name     string
      size     int
@@ -26,7 +26,7 @@ type ChannelMemoryContext struct {
     Data   [16]*unsafe.Pointer
 }
 
-var memoryChannel = String{ len("memory_channel"), "memory_channel" }
+var memoryChannel = String_t{ len("memory_channel"), "memory_channel" }
 var channelMemoryContext = &ChannelMemoryContext{
     Name: memoryChannel,
 }
@@ -48,12 +48,12 @@ func (r *ChannelMemoryContext) GetDatas() []*unsafe.Pointer {
 }
 
 var (
-    name = String{ len("name"), "name" }
-    size = String{ len("size"), "size" }
+    name = String_t{ len("name"), "name" }
+    size = String_t{ len("size"), "size" }
     channelMemory ChannelMemory
 )
 
-var channelMemoryCommands = []Command{
+var channelMemoryCommands = []Command_t{
 
     { name,
       MEMORY_CONFIG|CONFIG_VALUE,
@@ -72,17 +72,8 @@ var channelMemoryCommands = []Command{
     NilCommand,
 }
 
-var channelMemoryModule = &ChannelMemory{
-    Module: &Module{
-        MODULE_V1,
-        CONTEXT_V1,
-        channelMemoryContext,
-        channelMemoryCommands,
-        MEMORY_MODULE,
-    },
-}
 
-func (r *ChannelMemory) Init(o *Option) int {
+func (r *ChannelMemory) Init(o *Option_t) int {
     context := r.Context.GetDatas()
 
     for _, v := range context {
@@ -101,7 +92,7 @@ func (r *ChannelMemory) Init(o *Option) int {
     return Ok
 }
 
-func (r *ChannelMemory) Main(cfg *Configure) int {
+func (r *ChannelMemory) Main(c *Configure_t) int {
     fmt.Println("Memory main")
     return Ok
 }
@@ -111,10 +102,18 @@ func (r *ChannelMemory) Exit() int {
     return Ok
 }
 
-func (r *ChannelMemory) Type() *Module {
+func (r *ChannelMemory) Type() *Module_t {
     return r.Self()
 }
 
+var channelMemoryModule = &Module{
+    MODULE_V1,
+    CONTEXT_V1,
+    channelMemoryContext,
+    channelMemoryCommands,
+    MEMORY_MODULE,
+}
+
 func init() {
-    Modulers = Load(Modulers, channelMemoryModule)
+    Modules = Load(Modules, &ChannelMemory{Module_t:channelMemoryModule})
 }

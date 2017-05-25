@@ -18,13 +18,13 @@ const (
 )
 
 type FileConfigure struct {
-    *Module
-    *Configure
+    *Module_t
+    *Configure_t
 
      watcher     *fsnotify.Watcher
      resource     string
 
-     Notice       chan *Event
+     Notice       chan *Event_t
 }
 
 func (fc *FileConfigure) SetResource(resource string) int {
@@ -70,8 +70,8 @@ func (fc *FileConfigure) SetConfigure() int {
 }
 
 func (fc *FileConfigure) GetConfigure() int {
-    if fc.File == nil {
-        fc.File = NewFile(fc.Log)
+    if fc.File_t == nil {
+        fc.File_t = NewFile(fc.Log_t)
     }
 
     resource := fc.GetResource()
@@ -91,11 +91,11 @@ func (fc *FileConfigure) Clear() {
     return
 }
 
-func (fc *FileConfigure) Init(option *Option) int {
-    if c := option.Configure; c != nil {
-        fc.Configure = c
+func (fc *FileConfigure) Init(option *Option_t) int {
+    if c := option.Configure_t; c != nil {
+        fc.Configure_t = c
     } else {
-        fc.Configure = NewConfigure(option.Log)
+        fc.Configure_t = NewConfigure(option.Log_t)
     }
 
     var (
@@ -139,14 +139,14 @@ func (fc *FileConfigure) Init(option *Option) int {
         return Error
     }
 
-    if fc.NewConfigurer(fc) == Error {
+    if fc.NewConfigure(fc) == Error {
         return Error
     }
 
     return Ok
 }
 
-func (fc *FileConfigure) Main(configure *Configure) int {
+func (fc *FileConfigure) Main(configure *Configure_t) int {
     flag := Error
 
     if fc.GetConfigure() == Error {
@@ -206,6 +206,19 @@ func (fc *FileConfigure) Exit() int {
     return Ok
 }
 
+var FileConfigureModule = &Module_t{
+    MODULE_V1,
+    CONTEXT_V1,
+    nil,
+    nil,
+    SYSTEM_MODULE,
+}
+
+func init() {
+    Modules = Load(Modules, &FileConfigure{Module_t:FileConfigureModule})
+}
+
+/*
 func (fc *FileConfigure) Type() *Module {
     return fc.Self()
 }
@@ -222,7 +235,4 @@ var FileConfigureModule = &FileConfigure{
     resource:  RESOURCE,
     Notice:    make(chan *Event),
 }
-
-func init() {
-    Modulers = Load(Modulers, FileConfigureModule)
-}
+*/
