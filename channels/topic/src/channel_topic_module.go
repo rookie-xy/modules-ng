@@ -31,7 +31,7 @@ var channelTopicContext = &ChannelTopicContext{
     Name: topicChannel,
 }
 
-func (r *ChannelTopicContext) Create() unsafe.Pointer {
+func (r *ChannelTopicContext) Set() unsafe.Pointer {
     topic := NewChannelTopic()
     if topic == nil {
         return nil
@@ -42,7 +42,7 @@ func (r *ChannelTopicContext) Create() unsafe.Pointer {
     return unsafe.Pointer(topic)
 }
 
-func (r *ChannelTopicContext) GetDatas() []*unsafe.Pointer {
+func (r *ChannelTopicContext) Get() []*unsafe.Pointer {
     return r.Data[:]
 }
 
@@ -69,7 +69,7 @@ func (r *ChannelTopic) Init(o *Option_t) int {
         return Error
     }
 
-    context := r.Context.GetDatas()
+    context := r.Context.Get()
     for _, v := range context {
         if v != nil {
             this := (*ChannelTopic)(unsafe.Pointer(uintptr(*v)))
@@ -109,5 +109,5 @@ var channelTopicModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &ChannelTopic{Module_t:channelTopicModule})
+    Modules = append(Modules, &ChannelTopic{Module_t:channelTopicModule})
 }

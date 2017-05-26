@@ -215,24 +215,5 @@ var FileConfigureModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &FileConfigure{Module_t:FileConfigureModule})
+    Modules = append(Modules, &FileConfigure{Module_t:FileConfigureModule})
 }
-
-/*
-func (fc *FileConfigure) Type() *Module {
-    return fc.Self()
-}
-
-var FileConfigureModule = &FileConfigure{
-    Module: &Module{
-        MODULE_V1,
-        CONTEXT_V1,
-        nil,
-        nil,
-        SYSTEM_MODULE,
-    },
-
-    resource:  RESOURCE,
-    Notice:    make(chan *Event),
-}
-*/

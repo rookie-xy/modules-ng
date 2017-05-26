@@ -51,5 +51,5 @@ var elasticSearchModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &ElasticSearch{elasticSearchModule})
+    Modules = append(Modules, &ElasticSearch{elasticSearchModule})
 }

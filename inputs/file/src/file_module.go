@@ -51,5 +51,5 @@ var fileModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &Files{Module_t:fileModule})
+    Modules = append(Modules, &Files{Module_t:fileModule})
 }

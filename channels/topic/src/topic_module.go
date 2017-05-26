@@ -51,5 +51,5 @@ var topicModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &Topic{Module_t:topicModule})
+    Modules = append(Modules, &Topic{Module_t:topicModule})
 }

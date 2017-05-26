@@ -51,5 +51,5 @@ var stdoutModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &Stdout{stdoutModule})
+    Modules = append(Modules, &Stdout{stdoutModule})
 }

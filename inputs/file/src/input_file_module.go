@@ -36,7 +36,7 @@ var inputFileContext = &InputFileContext{
     Name: fileInput,
 }
 
-func (r *InputFileContext) Create() unsafe.Pointer {
+func (r *InputFileContext) Set() unsafe.Pointer {
     file := NewInputFile()
     if file == nil {
         return nil
@@ -51,7 +51,7 @@ func (r *InputFileContext) Create() unsafe.Pointer {
     return unsafe.Pointer(file)
 }
 
-func (r *InputFileContext) GetDatas() []*unsafe.Pointer {
+func (r *InputFileContext) Get() []*unsafe.Pointer {
     return r.Data[:]
 }
 
@@ -111,7 +111,7 @@ func (r *InputFile) Init(o *Option_t) int {
         return Error
     }
 
-    context := r.Context.GetDatas()
+    context := r.Context.Get()
     for _, v := range context {
         if v != nil {
             this := (*InputFile)(unsafe.Pointer(uintptr(*v)))
@@ -163,5 +163,5 @@ var inputFileModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &InputFile{Module_t:inputFileModule})
+    Modules = append(Modules, &InputFile{Module_t:inputFileModule})
 }

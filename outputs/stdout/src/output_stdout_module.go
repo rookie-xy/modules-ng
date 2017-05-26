@@ -31,7 +31,7 @@ var outputStdoutContext = &OutputStdoutContext{
     Name: stdoutOutput,
 }
 
-func (r *OutputStdoutContext) Create() unsafe.Pointer {
+func (r *OutputStdoutContext) Set() unsafe.Pointer {
     stdout := NewOutputStdout()
     if stdout == nil {
         return nil
@@ -42,11 +42,7 @@ func (r *OutputStdoutContext) Create() unsafe.Pointer {
     return unsafe.Pointer(stdout)
 }
 
-func (r *OutputStdoutContext) GetDatas() []*unsafe.Pointer {
-    return r.Data[:]
-}
-
-func (r *OutputStdoutContext) GetDatass() []*unsafe.Pointer {
+func (r *OutputStdoutContext) Get() []*unsafe.Pointer {
     return r.Data[:]
 }
 
@@ -76,7 +72,7 @@ var outputStdoutCommands = []Command_t{
 }
 
 func (r *OutputStdout) Init(o *Option_t) int {
-    context := r.Context.GetDatas()
+    context := r.Context.Get()
 
     for _, v := range context {
         if v != nil {
@@ -121,5 +117,5 @@ var outputStdoutModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &OutputStdout{Module_t:outputStdoutModule})
+    Modules = append(Modules, &OutputStdout{Module_t:outputStdoutModule})
 }

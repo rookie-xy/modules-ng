@@ -31,7 +31,7 @@ var outputElasticSearchContext = &OutputElasticSearchContext{
     Name: elasticSearchOutput,
 }
 
-func (r *OutputElasticSearchContext) Create() unsafe.Pointer {
+func (r *OutputElasticSearchContext) Set() unsafe.Pointer {
     elasticsearch := NewOutputElasticSearch()
     if elasticsearch == nil {
         return nil
@@ -42,7 +42,7 @@ func (r *OutputElasticSearchContext) Create() unsafe.Pointer {
     return unsafe.Pointer(elasticsearch)
 }
 
-func (r *OutputElasticSearchContext) GetDatas() []*unsafe.Pointer {
+func (r *OutputElasticSearchContext) Get() []*unsafe.Pointer {
     return r.Data[:]
 }
 
@@ -73,7 +73,7 @@ var outputElasticSearchCommands = []Command_t{
 }
 
 func (r *OutputElasticSearch) Init(o *Option_t) int {
-    context := r.Context.GetDatas()
+    context := r.Context.Get()
 
     for _, v := range context {
         if v != nil {
@@ -117,5 +117,5 @@ var outputElasticSearchModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &OutputElasticSearch{Module_t:outputElasticSearchModule})
+    Modules = append(Modules, &OutputElasticSearch{Module_t:outputElasticSearchModule})
 }

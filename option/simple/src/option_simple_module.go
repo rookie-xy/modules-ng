@@ -98,5 +98,5 @@ var SimpleOptionModule = &Module_t{
 }
 
 func init() {
-    Modules = Load(Modules, &SimpleOption{SimpleOptionModule})
+    Modules = append(Modules, &SimpleOption{SimpleOptionModule})
 }
