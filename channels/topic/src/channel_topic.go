@@ -15,6 +15,7 @@ type ChannelTopic struct {
     *Module_t
 
      name     string
+     filter   Array_t
 }
 
 func NewChannelTopic() *ChannelTopic {
@@ -47,7 +48,8 @@ func (r *ChannelTopicContext) Get() []*unsafe.Pointer {
 }
 
 var (
-    name = String_t{ len("name"), "name" }
+    name   = String_t{ len("name"), "name" }
+    filter = String_t{ len("filter"), "filter" }
     channelTopic ChannelTopic
 )
 
@@ -58,6 +60,13 @@ var channelTopicCommands = []Command_t{
       SetString,
       0,
       unsafe.Offsetof(channelTopic.name),
+      nil },
+
+    { filter,
+      TOPIC_CONFIG|CONFIG_VALUE,
+      SetArray,
+      0,
+      unsafe.Offsetof(channelTopic.filter),
       nil },
 
     NilCommand,
@@ -77,11 +86,12 @@ func (r *ChannelTopic) Init(o *Option_t) int {
                 return Error
             }
 
-            //topic := NewTopic(this.name)
-            //topic.Init(nil)
+            topic := NewTopic(this.name)
+            if topic.Create(this.filter) == Error {
+                return Error
+            }
 
-            fmt.Println(this.name)
-            //configure.Channel = append(configure.Channel, topic)
+            configure.Channels = append(configure.Channels, topic)
         } else {
             break
         }
@@ -90,7 +100,11 @@ func (r *ChannelTopic) Init(o *Option_t) int {
     return Ok
 }
 
-func (r *ChannelTopic) Main(cfg *Configure_t) int {
+func (r *ChannelTopic) Main(c *Configure_t) int {
+    for _, v := range c.Channels {
+        go v.Intercept()
+    }
+
     fmt.Println("Topic main")
     return Ok
 }

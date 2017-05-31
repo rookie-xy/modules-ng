@@ -18,6 +18,14 @@ type ElasticSearch struct{
     *Module_t
 }
 
+func NewElasticSearch() *ElasticSearch {
+    return &ElasticSearch{}
+}
+
+func (r *ElasticSearch) Writer(events Event) int {
+    return Ok
+}
+
 var elasticsearch = String_t{ len("elasticsearch"), "elasticsearch" }
 var elasticSearchCommands = []Command_t{
 
@@ -51,5 +59,5 @@ var elasticSearchModule = &Module_t{
 }
 
 func init() {
-    Modules = append(Modules, &ElasticSearch{elasticSearchModule})
+    Modules = append(Modules, &ElasticSearch{Module_t:elasticSearchModule})
 }

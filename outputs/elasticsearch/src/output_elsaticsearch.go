@@ -15,6 +15,8 @@ type OutputElasticSearch struct {
 
      subscribe  Array_t
      cluster    Array_t
+
+     Output
 }
 
 func NewOutputElasticSearch() *OutputElasticSearch {
@@ -73,8 +75,14 @@ var outputElasticSearchCommands = []Command_t{
 }
 
 func (r *OutputElasticSearch) Init(o *Option_t) int {
-    context := r.Context.Get()
+    configure := o.Configure_t
+    if configure == nil {
+        return Error
+    }
 
+    elasticsearch := elasticSearchOutput.Data.(string)
+
+    context := r.Context.Get()
     for _, v := range context {
         if v != nil {
             this := (*OutputElasticSearch)(unsafe.Pointer(uintptr(*v)))
@@ -82,8 +90,16 @@ func (r *OutputElasticSearch) Init(o *Option_t) int {
                 return Error
             }
 
+            this.Output = NewElasticSearch()
+
             for i := 0; i < this.subscribe.GetLength(); i++ {
-                fmt.Println(this.subscribe.GetData(i))
+                topic := this.subscribe.GetData(i)
+
+                for _, v := range configure.Channels {
+                    if topic := v.Register(topic, elasticsearch); topic != nil {
+                        configure.Channels = append(configure.Channels, topic)
+                    }
+                }
             }
 
             for i := 0; i < this.cluster.GetLength(); i++ {
@@ -98,10 +114,35 @@ func (r *OutputElasticSearch) Init(o *Option_t) int {
     return Ok
 }
 
-func (r *OutputElasticSearch) Main(cfg *Configure_t) int {
+func (r *OutputElasticSearch) Main(c *Configure_t) int {
+    var channel []Channel
+    elasticsearch := elasticSearchOutput.Data.(string)
+
+    for _, topic := range c.Channels {
+        if topic.Type(elasticsearch) != Ok {
+            continue
+        }
+
+        channel = append(channel, topic)
+
+        //go r.Output(topic, r.Output)
+    }
+
+    for {
+        for _, topic := range channel {
+            events := topic.Pull(nil)
+            if events != nil {
+                r.Writer(events)
+            }
+        }
+
+        // TODO p->done()
+    }
+
     fmt.Println("output main")
     return Ok
 }
+
 
 func (r *OutputElasticSearch) Exit() int {
     fmt.Println("output exit")
