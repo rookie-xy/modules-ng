@@ -22,4 +22,3 @@ type FileInput struct {
 func NewFileInput() *FileInput {
     return &FileInput{}
 }
-

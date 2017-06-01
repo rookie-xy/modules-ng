@@ -12,13 +12,12 @@ type FileInputContext struct {
      Data     [32]*unsafe.Pointer
 }
 
-//var inputFile = String_t{ len("file_input"), "file_input" }
 var fileInputContext = &FileInputContext{
-    Name:    String_t{ len("file_input"), "file_input" },
+    Name:      String_t{ len("file_input"), "file_input" },
     Context_t: NewContext(),
 }
 
-func (r *FileInputContext) Builder() unsafe.Pointer {
+func (r *FileInputContext) Build() unsafe.Pointer {
     file := NewFileInput()
     if file == nil {
         return nil
@@ -27,12 +26,11 @@ func (r *FileInputContext) Builder() unsafe.Pointer {
     file.group   = "worker"
     file.types   = "file"
     file.publish = "topic"
-    //file.paths   = nil
-    //file.codec   = nil
 
-    background := CreateBackgroundContext()
-    if r.WithCancel(background) != Ok {
-        return nil
+    if this := CreateBackgroundContext(); this != nil {
+        if r.WithCancel(this) != Ok {
+            return nil
+        }
     }
 
     return unsafe.Pointer(file)
